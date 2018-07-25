@@ -1,0 +1,35 @@
+    <div class="jumbotron">
+      <h2>Google Sign-X DEMO</h2>
+
+      <h3>One-Tap Sign-Up</h3>
+      <p><a id="back" href="/">Back</a> / <a id="reload" href="/signup">Reload</a></p>
+
+      <textarea id="log" readonly=true cols=75 rows=25></textarea>
+    </div>
+
+    <script>
+      window.onGoogleYoloLoad = (googleyolo) => {
+
+        const hintPromise = googleyolo.hint({
+          supportedAuthMethods: [
+            GOOGLE_ACCOUNT_URI
+          ],
+          supportedIdTokenProviders: [
+            {
+              uri: GOOGLE_ACCOUNT_URI,
+              clientId: GOOGLE_CLIENT_ID
+            }
+          ]
+        });
+  
+        hintPromise.then((credential) => {
+          add_log('signup credential : ' + JSON.stringify(credential))
+        }, (error) => {
+          add_log('signup error: ' + error.type)
+
+          if (error.type == "noCredentialsAvailable") {
+            add_log('Please sign in to Google and try again.')
+          }
+        });
+      };
+  </script>

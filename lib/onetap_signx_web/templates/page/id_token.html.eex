@@ -1,0 +1,12 @@
+    <div class="jumbotron">
+      <h2>Google Sign-X DEMO</h2>
+
+      <h3>Verify ID Token</h3>
+      <p><a id="back" href="/">Back</a></p>
+
+      <textarea id="log" readonly=true cols=75 rows=25>
+error: <%= @error %>
+
+payload: <%= @payload %>
+      </textarea>
+    </div>

@@ -1,0 +1,58 @@
+    <div class="jumbotron">
+      <h2>Google Sign-X DEMO</h2>
+
+      <h3>Automatic Sign-In</h3>
+      <p><a id="back" href="/">Back</a> / <a id="reload" href="/signin">Reload</a></p>
+      <div id="signin_area" style="display: none;">
+        <p><a id="signout" href="#">Sign-Out</a></p>
+        <%= form_for @conn, page_path(@conn, :id_token), fn f -> %>
+          <input id="id_token" name="id_token" type="hidden" value="">
+          <input id="submit" class="submit" type='submit' name="btn-submit" value='Verify ID Token' disabled>
+        <% end %>
+      </div>
+
+      <textarea id="log" readonly=true cols=75 rows=25></textarea>
+    </div>
+
+    <script>
+      window.onGoogleYoloLoad = (googleyolo) => {
+        signin()
+        document.querySelector('#signout').onclick = function(){
+          signout()
+        }
+      };
+
+      function signin() {
+        const retrievePromise = googleyolo.retrieve({
+          supportedAuthMethods: [
+            GOOGLE_ACCOUNT_URI
+          ],
+          supportedIdTokenProviders: [
+            {
+              uri: GOOGLE_ACCOUNT_URI,
+              clientId: GOOGLE_CLIENT_ID
+            }
+          ]
+        });
+
+        retrievePromise.then((credential) => {
+          add_log('signup credential : ' + JSON.stringify(credential))
+          document.getElementById("id_token").value = credential.idToken;
+          document.getElementById("submit").disabled=false;
+          document.querySelector('#signin_area').style.display = "block"
+        }, (error) => {
+          add_log('signin error: ' + error.type)
+
+          if (error.type == "noCredentialsAvailable") {
+            add_log('Please sign in to Google and try again.')
+          }
+        });
+      }
+
+      function signout(){
+        googleyolo.disableAutoSignIn().then(() => {
+          add_log('signout completed')
+          document.querySelector('#signin_area').style.display = "none"
+        });
+      }
+  </script>

@@ -1,0 +1,4 @@
+    <div class="jumbotron">
+      <h2>Google Sign-X DEMO</h2>
+      <p><a href="/signup">One-Tap Sign-Up</a> / <a href="/signin">Automatic Sign-In</a></p>
+    </div>
